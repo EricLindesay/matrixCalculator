@@ -1,6 +1,6 @@
 import unittest
-import matrix
-Matrix = matrix.Matrix
+import matrixLib
+Matrix = matrixLib.Matrix
 
 class TestMatrixGivenRowsCols(unittest.TestCase):
 
