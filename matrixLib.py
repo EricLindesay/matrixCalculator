@@ -361,12 +361,46 @@ def determinant(matrix: Matrix) -> float:
 def rank(matrix: Matrix) -> float:
     return matrix.rank()
 
+def gaussian(A: Matrix, B: Matrix) -> Matrix:
+    a = A.matrix
+    b = B.matrix
+
+    # if A.rows > A.cols, just treat it as a square matrix
+    if A.cols != B.rows:
+        raise TypeError("Invalid matrix dimensions")
+    
+    for i in range(1, A.cols): # loop through each row (except first)
+        for offset in range(0, A.cols-i): # loop through the remaining rows
+            coeff = a[i+offset][i-1]/a[i-1][i-1]
+            for j in range(i-1, A.cols): # update each value with the new value
+                a[i+offset][j] = a[i+offset][j] - coeff*a[i-1][j]
+            b[i+offset][0] = b[i+offset][0] - coeff*b[i-1][0]
+
+    # now we have the gaussian eliminated form of the matrices
+    # now solve it
+
+    sol = []
+    for _ in range(B.rows):
+        sol.append([0])
+    
+    for i in range(A.cols-1, -1, -1):
+        ans = b[i][0]
+        for j in range(A.cols-1, i, -1):
+            ans -= sol[j][0]*a[i][j]
+        
+        sol[i][0] = ans/a[i][i]
+        if sol[i][0] < 0.000000001:
+            sol[i][0] = 0
+
+    return Matrix(sol)
+
 # is linearly dependent
 # LU factorisation
 # gaussian elim
 if __name__ == "__main__":
     print("This file contains the matrix class. You should instead open something else.")
     start_time = time()
-    c = Matrix([[1,1,2,],[1,-1,0],[2,-1,1]])
-    print(c.rank())
+    a = Matrix([[1,2,3],[4,5,6],[9,8,9]])
+    b = Matrix([[1],[2],[3]])
+    print(gaussian(a, b))
     print(f"Time taken: {time()-start_time}")
