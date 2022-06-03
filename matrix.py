@@ -366,6 +366,7 @@ def determinant(matrix: Matrix) -> float:
 # LU factorisation
 # gaussian elim
 if __name__ == "__main__":
+    print("This file contains the matrix class. You should instead open something else.")
     start_time = time()
     c = Matrix([[1,1,2,],[1,-1,0],[2,-1,1]])
     print(c.rank())
