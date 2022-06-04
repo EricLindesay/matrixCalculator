@@ -415,16 +415,7 @@ def gaussian(A: Matrix, B: Matrix) -> Matrix:
     return Matrix(sol)
 
 def identity(size: int) -> Matrix:
-    mat = []
-    for i in range(size):
-        row = []
-        for j in range(size):
-            if i == j:
-                row.append(1)
-            else:
-                row.append(0)
-        mat.append(row)
-
+    mat = [[1*(i == j) for j in range(size)] for i in range(size)]
     return Matrix(mat)
 
 # is linearly dependent
