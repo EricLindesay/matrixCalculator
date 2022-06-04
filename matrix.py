@@ -14,6 +14,8 @@ single_arg = {
     'identity': 'is_identity',
     'transpose': 'transpose',
     'adjugate': 'adjugate',
+    'lower': 'lower',
+    'upper': 'upper',
 }
 multi_arg = {
     "add": lambda x, y: x + y,

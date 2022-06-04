@@ -1,7 +1,6 @@
 from numbers import Number
 from multipledispatch import dispatch
 from time import time
-import functools
 from itertools import combinations
 
 class Matrix():
@@ -129,12 +128,12 @@ class Matrix():
         return string
 
     def get_row_string(self, row) -> str:
-        string = ""
+        string = "["
         for ind, col in enumerate(row):
             string += str(col)
             if ind < len(row)-1:
                 string += ", "
-        return string
+        return string+"]"
 
     def valid_matrix(self, matrix) -> bool:
         cols = -1
@@ -324,6 +323,27 @@ class Matrix():
         
         return rank
 
+    def LU_factorise(self) -> object:
+        u = [row[:] for row in self.matrix]
+        l = identity(self.rows).matrix
+        if self.rows != self.cols:
+            raise ArithmeticError("Passed in matrix must be square")
+
+        for i in range(1, self.cols): # loop through each row (except first)
+            for offset in range(0, self.cols-i): # loop through the remaining rows (row-1) times
+                coeff = u[i+offset][i-1]/u[i-1][i-1]
+                for j in range(i-1, self.cols): # update each value with the new value
+                    u[i+offset][j] = u[i+offset][j] - coeff*u[i-1][j]
+                l[i+offset][i-1] = coeff
+        return Matrix(l), Matrix(u)
+
+    def upper(self) -> object:
+        _, u = self.LU_factorise()
+        return u
+    
+    def lower(self) -> object:
+        l, _ = self.LU_factorise()
+        return l
 
 def inverse(matrix: Matrix) -> Matrix:
     if not matrix.is_square():
@@ -394,6 +414,19 @@ def gaussian(A: Matrix, B: Matrix) -> Matrix:
 
     return Matrix(sol)
 
+def identity(size: int) -> Matrix:
+    mat = []
+    for i in range(size):
+        row = []
+        for j in range(size):
+            if i == j:
+                row.append(1)
+            else:
+                row.append(0)
+        mat.append(row)
+
+    return Matrix(mat)
+
 # is linearly dependent
 # LU factorisation
 # gaussian elim
@@ -401,6 +434,6 @@ if __name__ == "__main__":
     print("This file contains the matrix class. You should instead open something else.")
     start_time = time()
     a = Matrix([[1,2,3],[4,5,6],[9,8,9]])
-    b = Matrix([[1],[2],[3]])
-    print(gaussian(a, b))
+    print(a.upper())
+    print(a.lower())
     print(f"Time taken: {time()-start_time}")
