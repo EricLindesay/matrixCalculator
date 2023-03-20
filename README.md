@@ -47,9 +47,9 @@ Multi Argument Commands
     - In the form, Ax = b, it finds x given A and b
 
 ## Examples
-./matrix.py det [[1,2],[4,5]]
-./matrix.py add [[1,2],[3,4]] [[5,6],[7,8]] [[9,0],[1,2]]
-./matrix.py gauss "[[1, 2],[3, 4]]" [[3],[6]]
+./matrix.py det [[1,2],[4,5]]  
+./matrix.py add [[1,2],[3,4]] [[5,6],[7,8]] [[9,0],[1,2]]  
+./matrix.py gauss "[[1, 2],[3, 4]]" [[3],[6]]  
 
 ## Note
 Be wary of spaces when typing in your matrix as the program sees it as another argument
